@@ -4,38 +4,39 @@ package main
 import("fmt";"math")
 
 type Numerology_Config struct{
-Subcarrier_Spacing int
-Numerology int
-Ts int
-Tc int
-Tf int
-Tsf int
-Fc int
-BW int
-Slots_in_Subframe int
-Subframe_in_Frame int
-Symbols_in_SLot int
-Subcarrier_in_Slot int
-Bandwidth int
-CP_Duration int
-Symbol_Duration int
-OFDM_Duration int
-Slot_Length int
-Slots_in_Frame int
-Fmax int
-Fref int
-Nfft int
-Nref int
-Symbols_in_Subframe int
+Subcarrier_Spacing float64
+Numerology float64
+Ts float64
+Tc float64
+Tf float64
+Tsf float64
+Fc float64
+BW float64
+Slots_in_Subframe float64
+Subframe_in_Frame float64
+Symbols_in_SLot float64
+Subcarrier_in_Slot float64
+Bandwidth float64
+CP_Duration float64
+Symbol_Duration float64
+OFDM_Duration float64
+Slot_Length float64
+Slots_in_Frame float64
+Fmax float64
+Fref float64
+Nfft float64
+Nref float64
+Symbols_in_Subframe float64
 
 }
 
-func NR_Config(int Space,int Fc,int BW)*Numerology_Config{
-  res=new(Numerology_Config)
+func NR_Config( Space float64, Fc float64, BW float64)*Numerology_Config{
+  var res=new(Numerology_Config)
   res.Subcarrier_Spacing=Space
-  res.Numerology=Log2(Space/15*10^3)
-  res.Fmax=480*10^3
-  res.Fref=15*10^3
+
+  res.Numerology=math.Log2(res.Subcarrier_Spacing/15000)
+  res.Fmax=480*1000
+  res.Fref=15*1000
   res.Nfft=4096
   res.Nref=2048
   res.Fc=Fc
@@ -44,7 +45,7 @@ func NR_Config(int Space,int Fc,int BW)*Numerology_Config{
   res.Tc=1/(res.Fref*res.Nref)
   res.Tf=(res.Fmax*res.Nfft*res.Tc)/100
   res.Tsf=(res.Fmax*res.Nfft*res.Tc)/1000
-  res.Slots_in_Subframe=2^(res.Numerology)
+  res.Slots_in_Subframe=math.Pow(2,(res.Numerology))
   res.Subframe_in_Frame=res.Tf/res.Tsf
   res.Symbols_in_SLot=14
   res.Subcarrier_in_Slot=12
@@ -62,11 +63,10 @@ func NR_Config(int Space,int Fc,int BW)*Numerology_Config{
 }
 
 func main(){
- result=new(Numerology_Config)
- //result=:Numerology_Config{}
- var Fc int=4*10^9
- var Bw int=20*10^6
- var Space int=15*10^3
- result=NR_Config(Space,Fc,BW)
- fmt.Println(result.Fmax)
+
+ Fc :=4*math.Pow(10,9)
+ BW:=20*math.Pow(10,6)
+ Space:=15*math.Pow(10,3)
+ result :=NR_Config(Space,Fc,BW)
+ fmt.Println("Subcarrier Spacing:",result.Subcarrier_Spacing,"\nNumerology:",result.Numerology,"\nFmax",result.Fmax,"\nFref",result.Fref,"\nNfft",result.Nfft,"\nNref",result.Nref,"\nFc",result.Fc,"\nBW",result.BW,"\nSlots_in_Subframe",result.Slots_in_Subframe,"\nSubframe_in_Frame",result.Subframe_in_Frame,"\nSymbols_in_SLot",result.Symbols_in_SLot,"\nSubcarrier_in_Slot",result.Subcarrier_in_Slot,"\nBandwidth",result.Bandwidth,"\nSymbol_Duration",result.Symbol_Duration,"\nSlot_Length",result.Slot_Length,"\nSlots_in_Frame",result.Slots_in_Frame,"\nSymbols_in_Subframe",result.Symbols_in_Subframe,"\nTc",result.Tc,"\nTs",result.Ts,"\nTf",result.Tf,"\nTsf",result.Tsf)
 }
